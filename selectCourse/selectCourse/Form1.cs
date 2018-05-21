@@ -57,7 +57,7 @@ namespace selectCourse
             }
             catch (Exception exp)
             {
-                MessageBox.Show(exp.Message);
+                MessageBox.Show("选课不正确！");
             }
         }
 
@@ -99,6 +99,13 @@ namespace selectCourse
         {
             if (e.KeyChar == (char)Keys.Enter)
                 button1.PerformClick();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            textBox2.Text = "已选课程：";
+            for (int i = 0; i < listBox2.Items.Count; i++)
+                 textBox2.Text +=  " "+listBox2.Items[i];
         }
     }
 }

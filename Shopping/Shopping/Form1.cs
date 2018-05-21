@@ -17,10 +17,6 @@ namespace Shopping
             InitializeComponent();
         }
 
-
-
-
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch(comboBox1.SelectedIndex)
@@ -126,8 +122,8 @@ namespace Shopping
             string userNum = textBox2.Text;
 
             string items = "";
-            for (int i = 0; i < listBox2.SelectedItems.Count; i++)
-                items += listBox2.SelectedItems[i] + " ";
+            for (int i = 0; i < listBox2.Items.Count; i++)
+                items += listBox2.Items[i] + " ";
 
             string payment = "";
             {

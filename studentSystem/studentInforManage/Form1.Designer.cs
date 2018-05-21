@@ -1,4 +1,4 @@
-﻿namespace 学生信息管理
+﻿namespace studentInforManage
 {
     partial class Form1
     {
@@ -224,7 +224,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form1";
-            this.Text = "学生信息管理";
+            this.Text = " studentInforManage";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

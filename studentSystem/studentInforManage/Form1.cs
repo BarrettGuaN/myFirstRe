@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
-namespace 学生信息管理
+namespace studentInforManage
 {
     public partial class Form1 : Form
     {
@@ -103,7 +103,11 @@ namespace 学生信息管理
             //string mysql = "insert into tbl_student values ('" + sno + "','" + sname + "','" + ssex + "','" + sage + "','" + sdept + "')";
             SqlCommand mysqlcom = myconn.CreateCommand();
             mysqlcom.CommandText = mysql;
-            mysqlcom.ExecuteNonQuery();
+            int rows=mysqlcom.ExecuteNonQuery();
+            if(rows==0)
+            {
+                MessageBox.Show("目标不存在！");
+            }
             myconn.Close();
             btnSelAll.PerformClick();
         }
