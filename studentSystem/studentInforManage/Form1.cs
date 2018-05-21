@@ -17,7 +17,7 @@ namespace studentInforManage
             InitializeComponent();
         }
 
-        private void btnSelbyNo_Click(object sender, EventArgs e)
+        public void query(string mysql)
         {
             string strconn = "data source=localhost;uid=sa;pwd=123456;database=selectcourse";
             SqlConnection myconn = new SqlConnection(strconn);
@@ -25,11 +25,7 @@ namespace studentInforManage
 
             DataSet ds = new DataSet();
 
-            string sno = txtNo.Text.Trim();
-
-            //string mysql = "select * from tbl_student";
-            string mysql = "select Sno 学号,Sname 姓名,Ssex 性别,Sage 年龄,Sdept 专业 from tbl_Student where sno= "+sno;
-            SqlDataAdapter myadp = new SqlDataAdapter(mysql,myconn);
+            SqlDataAdapter myadp = new SqlDataAdapter(mysql, myconn);
 
             myadp.Fill(ds, "t1");
 
@@ -38,12 +34,25 @@ namespace studentInforManage
             {
                 MessageBox.Show("没有，快滚");
             }
-            else 
-            { 
-                        dataGridView1.DataSource = ds.Tables["t1"];
-                        SetHeader();
+            else
+            {
+                dataGridView1.DataSource = ds.Tables["t1"];
+                SetHeader();
             }
+        }
 
+        private void btnSelbyNo_Click(object sender, EventArgs e)
+        {
+            string sno = txtNo.Text.Trim();
+            if (sno == "")
+            {
+                MessageBox.Show("学号不能为空！");
+            }
+            else
+            {
+                string mysql = "select Sno 学号,Sname 姓名,Ssex 性别,Sage 年龄,Sdept 专业 from tbl_Student where sno='" + sno + "'";
+                query(mysql);
+            }            
         }
 
         void SetHeader()
@@ -56,32 +65,9 @@ namespace studentInforManage
         }
 
         private void btnSelAll_Click(object sender, EventArgs e)
-        {
-            string strconn = "data source=localhost;uid=sa;pwd=123456;database=selectcourse";
-            SqlConnection myconn = new SqlConnection(strconn);
-            myconn.Open();
-
-            DataSet ds = new DataSet();
-
-            string sno = txtNo.Text.Trim();
-            
+        {  
             string mysql = "select * from tbl_student";
-            //string mysql = "select Sno 学号,Sname 姓名,Ssex 性别,Sage 年龄,Sdept 专业 from tbl_Student where sno= "+sno;
-            SqlDataAdapter myadp = new SqlDataAdapter(mysql,myconn);
-
-            myadp.Fill(ds, "t1");
-
-            myconn.Close();
-            if (ds.Tables["t1"].Rows.Count == 0)
-            {
-                MessageBox.Show("没有，快滚");
-            }
-            else 
-            { 
-                        dataGridView1.DataSource = ds.Tables["t1"];
-                        SetHeader();
-            }
-
+            query(mysql);
         }
 
         private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -100,13 +86,33 @@ namespace studentInforManage
             SqlConnection myconn = new SqlConnection(strconn);
             myconn.Open();
 
-            //string mysql = "insert into tbl_student values ('" + sno + "','" + sname + "','" + ssex + "','" + sage + "','" + sdept + "')";
             SqlCommand mysqlcom = myconn.CreateCommand();
             mysqlcom.CommandText = mysql;
-            int rows=mysqlcom.ExecuteNonQuery();
-            if(rows==0)
+            try
             {
-                MessageBox.Show("目标不存在！");
+                int rows = mysqlcom.ExecuteNonQuery();
+                if (rows == 0)
+                {
+                    MessageBox.Show("目标不存在！");
+                }
+            }
+            catch (SqlException exp)//添加为空：547，修改为空，102，添加重复，2627
+            {
+                int num = exp.Number;
+                switch(num)
+                {
+                    case 102:
+                        MessageBox.Show("修改不能为空！");
+                        break;
+                    case 547:
+                        MessageBox.Show("添加不能为空！");
+                        break;
+                    case 2627:
+                        MessageBox.Show("添加不能重复！");
+                        break;
+                }
+
+                MessageBox.Show(exp.Number.ToString());
             }
             myconn.Close();
             btnSelAll.PerformClick();
