@@ -112,7 +112,7 @@ namespace studentInforManage
                         break;
                 }
 
-                MessageBox.Show(exp.Number.ToString());
+                //MessageBox.Show(exp.Number.ToString());
             }
             myconn.Close();
             btnSelAll.PerformClick();
